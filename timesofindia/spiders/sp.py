@@ -16,7 +16,7 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         print(re.findall(r"\d+", response.url)[-1])
-        filename = re.sub(r"/", r"_", response.url)
+        filename = re.sub(r"\/|:", r"_", response.url)
         with open("./news/%s" %filename , 'wb') as f:
             f.write(response.body)
 #farkli filelara url ismi file ismi olcak sekilde indir

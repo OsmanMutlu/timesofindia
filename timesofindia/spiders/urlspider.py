@@ -8,13 +8,17 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'https://timesofindia.indiatimes.com/2001/7/5/archivelist/year-2001,month-7,starttime-37077.cms',
+            'https://timesofindia.indiatimes.com/2001/7/5/archivelist/year-2001,month-7,starttime-37450.cms',
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
 #        urls = response.xpath('//table[@class="cnt"][last()]//tr[last()]/td[@width="670"]/div[last()]//a/@href').extract()
+        print(re.findall(r"\d+", response.url)[-1])
+        urlfilename = re.sub(r"\/|:", r"_", response.url)
+        with open("./urlhtmls/%s" %urlfilename, 'wb') as g:
+            g.write(response.body)
         urls = response.xpath('//td[@width="49%"]//a/@href').extract()
         print(urls)
         filename = 'urls.jl'
